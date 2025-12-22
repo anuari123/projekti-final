@@ -43,14 +43,14 @@ session_start();
                         <a class="nav-link" href="user/my_bookings.php">Rezervimet e mia</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-danger" href="auth/logout.php">Logout</a>
+                        <a class="nav-link text-danger" href="logout.php">Logout</a>
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
                         <a class="nav-link" href="auth/login.php">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="auth/register.php">Register</a>
+                        <a class="nav-link" href="signup.php">Register</a>
                     </li>
                 <?php endif; ?>
             </ul>
