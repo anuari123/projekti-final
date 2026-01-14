@@ -2,24 +2,32 @@
 include "config.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST["name"];
-    $email = $_POST["email"];
-    $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
-    $stmt = $pdo->prepare(
-        "INSERT INTO users (full_name, email, password) VALUES (?,?,?)"
-    );
-    $stmt->execute([$name, $email, $password]);
+    // Hash password
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    header("Location: login.php");
+    // Shto në databazë
+    $sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sss", $name, $email, $hashed_password);
+
+    if ($stmt->execute()) {
+        // Merr ID e përdoruesit të ri
+        $user_id = $stmt->insert_id;
+        $_SESSION['user_id'] = $user_id;
+        $_SESSION['user_name'] = $name;
+        
+        // Ridrejto direkt në dashboard
+        header("Location: dashboard.php");
+        exit();
+    } else {
+        echo "Gabim: Email ekziston tashmë!";
+    }
+} else {
+    header("Location: index.php");
+    exit();
 }
 ?>
-
-<h2>Sign Up</h2>
-
-<form method="POST">
-    <input type="text" name="name" placeholder="Full Name" required><br><br>
-    <input type="email" name="email" placeholder="Email" required><br><br>
-    <input type="password" name="password" placeholder="Password" required><br><br>
-    <button>Register</button>
-</form>

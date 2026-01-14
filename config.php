@@ -1,18 +1,14 @@
 <?php
-session_start();
+ // Shtoje këtë në fillim të config.php
 
 $host = "localhost";
-$dbname = "flight_booking_db";
 $user = "root";
 $pass = "";
+$dbname = "db"; // Ndrysho nëse databaza jote ka emër tjetër
 
-try {
-    $pdo = new PDO(
-        "mysql:host=$host;dbname=$dbname;charset=utf8",
-        $user,
-        $pass
-    );
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    die("Database connection failed");
+$conn = mysqli_connect($host, $user, $pass, $dbname);
+
+if (!$conn) {
+    die("Gabim ne lidhje me databaze: " . mysqli_connect_error());
 }
+?>
